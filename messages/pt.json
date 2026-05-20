@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "collections": "Coleções",
+    "sampleBooks": "Cartelas Digitais",
+    "industries": "Mercados",
+    "intelligence": "Inteligência",
+    "sustainability": "Sustentabilidade",
+    "about": "Sobre",
+    "contact": "Contato",
+    "requestSample": "Solicitar Amostra"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Inteligência têxtil arquitetônica",
+      "title": "Materiais que\ndefinem o espaço.",
+      "subtitle": "Lãs, linhos e têxteis técnicos premium para os interiores mais sofisticados do mundo.",
+      "ctaPrimary": "Explorar coleções",
+      "ctaSecondary": "Solicitar amostras"
+    },
+    "philosophy": {
+      "title": "Textura como arquitetura",
+      "body": "Cada fibra, cada trama, cada acabamento responde ao brief do espaço que habita."
+    },
+    "industries": {
+      "title": "Para ambientes que exigem mais",
+      "items": {
+        "workplace": "Corporativo",
+        "hospitality": "Hospitalidade",
+        "residential": "Residencial",
+        "acoustic": "Acústico",
+        "furniture": "Mobiliário",
+        "contract": "Contract"
+      }
+    },
+    "intelligence": { "title": "Inteligência de Mercado", "cta": "Ler mais" },
+    "sustainability": { "title": "Responsabilidade material", "body": "Lã que retorna à terra. Linho cultivado sem concessões." }
+  },
+  "collections": {
+    "title": "Coleções", "filter": "Filtrar", "all": "Todas",
+    "byFiber": "Por fibra", "byApplication": "Por aplicação",
+    "specs": "Especificações", "composition": "Composição",
+    "applications": "Aplicações", "downloads": "Downloads",
+    "requestSample": "Solicitar amostra", "related": "Coleções relacionadas"
+  },
+  "sampleBooks": {
+    "title": "Cartelas Digitais",
+    "subtitle": "Navegue cartelas completas, página a página.",
+    "browse": "Navegar cartela", "download": "Baixar PDF", "share": "Compartilhar", "favorite": "Salvar"
+  },
+  "form": {
+    "name": "Nome", "email": "E-mail", "company": "Empresa", "phone": "Telefone",
+    "message": "Mensagem", "submit": "Enviar", "submitting": "Enviando…",
+    "success": "Obrigado. Entraremos em contato.", "error": "Algo deu errado. Tente novamente."
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados.",
+    "newsletter": "Mantenha-se informado",
+    "newsletterDesc": "Inteligência trimestral sobre têxteis, materiais e os espaços que moldam."
+  }
+}

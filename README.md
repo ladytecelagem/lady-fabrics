@@ -1,4 +1,4 @@
-# Lady Fabrics — Enterprise Textile Platform
+# Lady Fabrics — Enterprise Textile Platform 
 
 Architectural textile intelligence platform. Next.js 16 · Sanity CMS · Supabase · Railway.
 

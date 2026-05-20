@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "collections": "Collections",
+    "sampleBooks": "Sample Books",
+    "industries": "Industries",
+    "intelligence": "Intelligence",
+    "sustainability": "Sustainability",
+    "about": "About",
+    "contact": "Contact",
+    "requestSample": "Request Sample"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Architectural textile intelligence",
+      "title": "Materials that\nshape space.",
+      "subtitle": "Premium wool, linen and contract textiles engineered for the world's most considered interiors.",
+      "ctaPrimary": "Explore collections",
+      "ctaSecondary": "Request samples"
+    },
+    "philosophy": {
+      "title": "Texture as architecture",
+      "body": "Every fibre, every weave, every finish answers a brief written by the space it inhabits. We make textiles for people who specify with intention."
+    },
+    "industries": {
+      "title": "Built for environments that demand more",
+      "items": {
+        "workplace": "Workplace",
+        "hospitality": "Hospitality",
+        "residential": "Residential",
+        "acoustic": "Acoustic",
+        "furniture": "Furniture",
+        "contract": "Contract"
+      }
+    },
+    "intelligence": { "title": "Market Intelligence", "cta": "Read the latest" },
+    "sustainability": { "title": "Material responsibility", "body": "Wool that returns to earth. Linen grown without compromise." }
+  },
+  "collections": {
+    "title": "Collections",
+    "filter": "Filter",
+    "all": "All",
+    "byFiber": "By fiber",
+    "byApplication": "By application",
+    "specs": "Specifications",
+    "composition": "Composition",
+    "applications": "Applications",
+    "downloads": "Downloads",
+    "requestSample": "Request a sample",
+    "related": "Related collections"
+  },
+  "sampleBooks": {
+    "title": "Digital Sample Books",
+    "subtitle": "Browse complete cartelas, page by page.",
+    "browse": "Browse cartela",
+    "download": "Download PDF",
+    "share": "Share",
+    "favorite": "Save"
+  },
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "phone": "Phone",
+    "message": "Message",
+    "submit": "Submit",
+    "submitting": "Submitting…",
+    "success": "Thank you. We will be in touch.",
+    "error": "Something went wrong. Please try again."
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "newsletter": "Stay informed",
+    "newsletterDesc": "Quarterly intelligence on textiles, materials and the spaces they shape."
+  }
+}

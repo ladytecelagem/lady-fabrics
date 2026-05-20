@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "collections": "Colecciones",
+    "sampleBooks": "Cartelas Digitales",
+    "industries": "Mercados",
+    "intelligence": "Inteligencia",
+    "sustainability": "Sostenibilidad",
+    "about": "Sobre",
+    "contact": "Contacto",
+    "requestSample": "Solicitar Muestra"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Inteligencia textil arquitectónica",
+      "title": "Materiales que\ndefinen el espacio.",
+      "subtitle": "Lanas, linos y textiles técnicos premium para los interiores más considerados del mundo.",
+      "ctaPrimary": "Explorar colecciones",
+      "ctaSecondary": "Solicitar muestras"
+    },
+    "philosophy": {
+      "title": "La textura como arquitectura",
+      "body": "Cada fibra, cada trama, cada acabado responde al brief del espacio que habita."
+    },
+    "industries": {
+      "title": "Para entornos que exigen más",
+      "items": {
+        "workplace": "Corporativo", "hospitality": "Hospitalidad",
+        "residential": "Residencial", "acoustic": "Acústico",
+        "furniture": "Mobiliario", "contract": "Contract"
+      }
+    },
+    "intelligence": { "title": "Inteligencia de Mercado", "cta": "Leer más" },
+    "sustainability": { "title": "Responsabilidad material", "body": "Lana que vuelve a la tierra. Lino cultivado sin concesiones." }
+  },
+  "collections": {
+    "title": "Colecciones", "filter": "Filtrar", "all": "Todas",
+    "byFiber": "Por fibra", "byApplication": "Por aplicación",
+    "specs": "Especificaciones", "composition": "Composición",
+    "applications": "Aplicaciones", "downloads": "Descargas",
+    "requestSample": "Solicitar muestra", "related": "Colecciones relacionadas"
+  },
+  "sampleBooks": {
+    "title": "Cartelas Digitales",
+    "subtitle": "Explora cartelas completas, página a página.",
+    "browse": "Explorar cartela", "download": "Descargar PDF", "share": "Compartir", "favorite": "Guardar"
+  },
+  "form": {
+    "name": "Nombre", "email": "Email", "company": "Empresa", "phone": "Teléfono",
+    "message": "Mensaje", "submit": "Enviar", "submitting": "Enviando…",
+    "success": "Gracias. Nos pondremos en contacto.", "error": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "newsletter": "Mantente informado",
+    "newsletterDesc": "Inteligencia trimestral sobre textiles, materiales y los espacios que moldean."
+  }
+}

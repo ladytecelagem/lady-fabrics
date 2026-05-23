@@ -9,15 +9,12 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "sanity:dev": "sanity dev",
-    "sanity:build": "sanity build",
-    "sanity:deploy": "sanity deploy",
-    "db:types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > types/supabase.ts",
-    "postinstall": "echo 'ok'"
+    "sanity:build": "sanity build"
   },
   "dependencies": {
-    "next": "^16.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "^15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.6.0",
     "@supabase/supabase-js": "^2.45.0",
     "@supabase/ssr": "^0.5.0",
@@ -57,14 +54,12 @@
   },
   "devDependencies": {
     "@types/node": "^22.7.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.14",
     "postcss": "^8.4.47",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.12.0",
-    "eslint-config-next": "^16.0.0",
-    "supabase": "^1.200.0"
+    "eslint-config-next": "^15.0.3"
   }
 }

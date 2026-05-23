@@ -5,6 +5,12 @@ const withNextIntl = createNextIntlPlugin("./lib/i18n/request.ts");
 
 const config: NextConfig = {
   reactStrictMode: true,
+    serverExternalPackages: ["pdfjs-dist", "sharp"],
+    webpack: (cfg) => {
+          cfg.resolve = cfg.resolve || {};
+          cfg.resolve.alias = { ...cfg.resolve.alias, canvas: false };
+          return cfg;
+    },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "cdn.sanity.io" },

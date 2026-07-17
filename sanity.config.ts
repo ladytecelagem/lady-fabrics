@@ -16,6 +16,7 @@ export default defineConfig({
           S.listItem().title("⚙️ Site Settings").child(S.document().schemaType("siteSettings").documentId("siteSettings")),
           S.divider(),
           S.documentTypeListItem("collection").title("📐 Collections"),
+          S.documentTypeListItem("fabric").title("🧵 Fabrics"),
           S.documentTypeListItem("sampleBook").title("📕 Sample Books"),
           S.documentTypeListItem("industry").title("🏛 Industries"),
           S.divider(),

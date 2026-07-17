@@ -31,19 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     alternates: { canonical: url },
     robots: c.seo?.noIndex ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: {
-      type: "article",
-      url,
-      title,
-      description,
-      siteName: "Lady Fabrics",
+      type: "article", url, title, description, siteName: "Lady Fabrics",
       images: image ? [{ url: image, width: 1200, height: 630, alt: c.title }] : undefined,
     },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: image ? [image] : undefined,
-    },
+    twitter: { card: "summary_large_image", title, description, images: image ? [image] : undefined },
   };
 }
 
@@ -59,21 +50,16 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "CollectionPage",
     name: c.title,
     description: lf<string>(c.seo?.description, locale) || tagline,
-    brand: { "@type": "Brand", name: "Lady Fabrics" },
-    category: c.fiber,
-    ...(c.heroImage ? { image: [c.heroImage] } : {}),
     url: `${SITE}/collections/${slug}`,
+    ...(c.heroImage ? { image: [c.heroImage] } : {}),
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* HERO */}
       <section className="relative h-[80vh] bg-ink text-bone overflow-hidden">
@@ -83,9 +69,7 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
           <Reveal>
             <p className="text-xs uppercase tracking-[0.3em] mb-4 text-bone/70">{c.fiber}</p>
             <h1 className="text-display text-6xl lg:text-9xl leading-none">{c.title}</h1>
-            {tagline && (
-              <p className="mt-6 max-w-xl text-lg text-bone/80">{tagline}</p>
-            )}
+            {tagline && <p className="mt-6 max-w-xl text-lg text-bone/80">{tagline}</p>}
           </Reveal>
         </Container>
       </section>
@@ -94,7 +78,6 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
       <Container className="py-24 grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-7">
           <Reveal>
-            <h2 className="text-display text-3xl mb-6">{t("title")}</h2>
             <div className="prose prose-neutral max-w-none text-ink/80 [&_p]:mb-6 [&_p]:text-lg [&_p]:leading-relaxed">
               {story?.length ? <PortableText value={story} /> : null}
             </div>
@@ -131,10 +114,58 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
             </div>
           )}
           <div className="pt-4">
-            <Button asChild className="w-full"><Link href={`/contact?intent=sample&collection=${c.slug.current}`}>{t("requestSample")}</Link></Button>
+            <Button asChild className="w-full">
+              <Link href={`/contact?intent=sample&collection=${c.slug.current}`}>{t("requestSample")}</Link>
+            </Button>
           </div>
         </aside>
       </Container>
+
+      {/* FABRICS */}
+      {c.fabrics?.length > 0 && (
+        <section className="py-16 border-t border-ink/10">
+          <Container>
+            <div className="flex items-baseline justify-between mb-12">
+              <h2 className="text-display text-3xl lg:text-5xl">Fabrics</h2>
+              <p className="text-xs uppercase tracking-widest text-stone">{c.fabrics.length} references</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+              {c.fabrics.map((f: any) => (
+                <Link key={f._id} href={`/fabrics/${f.slug.current}`} className="group block">
+                  <div className="relative aspect-square bg-wool overflow-hidden mb-3">
+                    {f.image && (
+                      <Image src={f.image} alt={f.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    )}
+                  </div>
+                  <h3 className="text-lg leading-tight">{f.name}</h3>
+                  {f.code && <p className="text-xs uppercase tracking-widest text-stone mt-1">{f.code}</p>}
+                  {f.composition && <p className="text-xs text-ink/50 mt-1">{f.composition}</p>}
+
+                  {f.colorways?.length > 0 && (
+                    <div className="flex items-center gap-1 mt-3">
+                      {f.colorways.slice(0, 6).map((cw: any, i: number) => (
+                        <span
+                          key={i}
+                          title={cw.name}
+                          className="w-4 h-4 rounded-full border border-ink/15 bg-wool bg-cover bg-center"
+                          style={{
+                            ...(cw.hex && !cw.swatch ? { backgroundColor: cw.hex } : {}),
+                            ...(cw.swatch ? { backgroundImage: `url(${cw.swatch})` } : {}),
+                          }}
+                        />
+                      ))}
+                      {f.colorways.length > 6 && (
+                        <span className="text-[11px] text-stone ml-1">+{f.colorways.length - 6}</span>
+                      )}
+                    </div>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
       {/* GALLERY */}
       {c.gallery?.length > 0 && (

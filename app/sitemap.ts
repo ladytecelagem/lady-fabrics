@@ -12,13 +12,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "collections": *[_type=="collection"]{ "slug": slug.current, _updatedAt },
       "sampleBooks": *[_type=="sampleBook"]{ "slug": slug.current, _updatedAt },
       "news": *[_type=="newsItem"]{ "slug": slug.current, _updatedAt },
+      "fabrics": *[_type=="fabric"]{ "slug": slug.current, _updatedAt },
     }`,
-  }).catch(() => ({ collections: [], sampleBooks: [], news: [] }));
+  }).catch(() => ({ collections: [], sampleBooks: [], news: [], fabrics: [] }));
 
   const dyn = [
     ...dynamicData.collections.map((c: any) => ({ url: `${base}/collections/${c.slug}`, lastModified: c._updatedAt })),
     ...dynamicData.sampleBooks.map((c: any) => ({ url: `${base}/sample-books/${c.slug}`, lastModified: c._updatedAt })),
     ...dynamicData.news.map((c: any) => ({ url: `${base}/news/${c.slug}`, lastModified: c._updatedAt })),
+    ...(dynamicData.fabrics ?? []).map((c: any) => ({ url: `${base}/fabrics/${c.slug}`, lastModified: c._updatedAt })),
   ];
 
   return [

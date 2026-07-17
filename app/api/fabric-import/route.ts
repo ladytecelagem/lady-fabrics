@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { createServiceClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/admin";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+const BUCKET = "sample-books-source";
 
 const PROMPT = `You are parsing a textile color card (cartela) PDF from Lady Fabrics / Tecelagem Lady.
 
@@ -41,12 +44,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const form = await req.formData();
-    const file = form.get("file") as File | null;
-    if (!file) return NextResponse.json({ error: "no file" }, { status: 400 });
-    if (file.type !== "application/pdf") {
-      return NextResponse.json({ error: "file must be a PDF" }, { status: 400 });
+    const { path } = await req.json();
+    if (!path || typeof path !== "string" || !path.startsWith("fabric-imports/")) {
+      return NextResponse.json({ error: "invalid path" }, { status: 400 });
     }
+
+    const sb = createServiceClient();
+    const { data: file, error } = await sb.storage.from(BUCKET).download(path);
+    if (error || !file) throw error || new Error("file not found in storage");
 
     const base64 = Buffer.from(await file.arrayBuffer()).toString("base64");
 
@@ -77,6 +82,9 @@ export async function POST(req: NextRequest) {
     } catch {
       return NextResponse.json({ error: "could not parse model output", raw: text.slice(0, 2000) }, { status: 502 });
     }
+
+    // limpeza do arquivo temporário (best effort)
+    await sb.storage.from(BUCKET).remove([path]).catch(() => {});
 
     return NextResponse.json({ ok: true, data }, { headers: { "cache-control": "no-store" } });
   } catch (e: any) {

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { createClient } from "@/lib/supabase/client";
 
 type Colorway = { name: string; code: string; hex: string };
 type Parsed = {
@@ -17,22 +18,41 @@ type Parsed = {
   colorways: Colorway[];
 };
 
+const BUCKET = "sample-books-source";
+
 export function FabricImporter({ collections }: { collections: { _id: string; title: string }[] }) {
   const [file, setFile] = useState<File | null>(null);
   const [collectionId, setCollectionId] = useState("");
-  const [busy, setBusy] = useState<"" | "parsing" | "saving">("");
+  const [busy, setBusy] = useState<"" | "uploading" | "parsing" | "saving">("");
   const [error, setError] = useState("");
   const [data, setData] = useState<Parsed | null>(null);
   const [saved, setSaved] = useState<{ slug: string; colorways: number } | null>(null);
 
   const parse = async () => {
     if (!file) return;
-    setBusy("parsing"); setError(""); setSaved(null);
+    setError(""); setSaved(null);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/fabric-import", { method: "POST", body: fd });
-      const json = await res.json();
+      // 1. upload direto do browser -> Supabase (nao passa pela Vercel)
+      setBusy("uploading");
+      const sb = createClient();
+      const path = `fabric-imports/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;
+      const { error: upErr } = await sb.storage.from(BUCKET).upload(path, file, {
+        contentType: "application/pdf",
+        upsert: true,
+      });
+      if (upErr) throw new Error(`upload: ${upErr.message}`);
+
+      // 2. rota so recebe o caminho
+      setBusy("parsing");
+      const res = await fetch("/api/fabric-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path }),
+      });
+      const raw = await res.text();
+      let json: any;
+      try { json = JSON.parse(raw); }
+      catch { throw new Error(raw.slice(0, 200)); }
       if (!res.ok) throw new Error(json.error || "parse failed");
       setData(json.data);
     } catch (e: any) {
@@ -65,6 +85,8 @@ export function FabricImporter({ collections }: { collections: { _id: string; ti
   const updCw = (i: number, k: keyof Colorway, v: string) =>
     setData(d => d ? { ...d, colorways: d.colorways.map((c, j) => j === i ? { ...c, [k]: v } : c) } : d);
 
+  const label = busy === "uploading" ? "Uploading…" : busy === "parsing" ? "Reading…" : "Read PDF";
+
   return (
     <div className="space-y-10">
       {/* STEP 1 */}
@@ -73,13 +95,12 @@ export function FabricImporter({ collections }: { collections: { _id: string; ti
         <div className="flex flex-wrap items-center gap-4">
           <input
             type="file" accept="application/pdf"
-            onChange={e => { setFile(e.target.files?.[0] ?? null); setData(null); setSaved(null); }}
+            onChange={e => { setFile(e.target.files?.[0] ?? null); setData(null); setSaved(null); setError(""); }}
             className="text-sm file:mr-4 file:border file:border-ink/20 file:bg-transparent file:px-4 file:py-2 file:text-xs file:uppercase file:tracking-widest"
           />
-          <Button onClick={parse} disabled={!file || busy !== ""}>
-            {busy === "parsing" ? "Reading…" : "Read PDF"}
-          </Button>
+          <Button onClick={parse} disabled={!file || busy !== ""}>{label}</Button>
         </div>
+        {file && <p className="text-xs text-stone mt-3">{(file.size / 1024 / 1024).toFixed(1)} MB</p>}
         {busy === "parsing" && (
           <p className="text-xs text-stone mt-3">Extracting specs and colorways. Large cards take up to a minute.</p>
         )}
@@ -157,14 +178,10 @@ export function FabricImporter({ collections }: { collections: { _id: string; ti
               {data.colorways?.map((cw, i) => (
                 <div key={i} className="space-y-1">
                   <div className="aspect-square border border-ink/10" style={{ backgroundColor: cw.hex }} />
-                  <Input
-                    value={cw.code ?? ""} onChange={e => updCw(i, "code", e.target.value)}
-                    className="h-8 text-xs" placeholder="code"
-                  />
-                  <Input
-                    value={cw.hex ?? ""} onChange={e => updCw(i, "hex", e.target.value)}
-                    className="h-8 text-xs font-mono" placeholder="#RRGGBB"
-                  />
+                  <Input value={cw.code ?? ""} onChange={e => updCw(i, "code", e.target.value)}
+                    className="h-8 text-xs" placeholder="code" />
+                  <Input value={cw.hex ?? ""} onChange={e => updCw(i, "hex", e.target.value)}
+                    className="h-8 text-xs font-mono" placeholder="#RRGGBB" />
                 </div>
               ))}
             </div>

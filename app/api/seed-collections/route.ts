@@ -181,8 +181,8 @@ const data: Seed[] = [
   },
   {
     id: "collection.in-and-out-indoor-outdoor",
-    slug: "in-and-out-indoor-outdoor",
-    title: "In and Out",
+    slug: "performance",
+    title: "Performance",
     order: 50,
     fiber: "technical",
     applications: ["hospitality", "residential", "contract", "outdoor"],
@@ -194,22 +194,22 @@ const data: Seed[] = [
     story: {
       en: [
         "The line between inside and outside has all but disappeared. These textiles are made for that blur — UV-stable, moisture-resistant and easy to clean, yet refined enough to specify for an interior without explanation.",
-        "Terraces, lobbies, poolside lounges, sunlit reading rooms — In and Out moves freely between them, holding its colour and character through weather and use alike.",
+        "Terraces, lobbies, poolside lounges, sunlit reading rooms — Performance moves freely between them, holding its colour and character through weather and use alike.",
       ],
       pt: [
         "A fronteira entre dentro e fora praticamente desapareceu. Estes tecidos são feitos para esse limite difuso — estáveis ao UV, resistentes à umidade e fáceis de limpar, mas refinados o bastante para serem especificados em um interior sem justificativa.",
-        "Terraços, lobbies, áreas de piscina, salas de leitura banhadas de sol — In and Out circula livremente entre eles, mantendo cor e caráter diante do tempo e do uso.",
+        "Terraços, lobbies, áreas de piscina, salas de leitura banhadas de sol — Performance circula livremente entre eles, mantendo cor e caráter diante do tempo e do uso.",
       ],
       es: [
         "La frontera entre dentro y fuera casi ha desaparecido. Estos tejidos están hechos para ese límite difuso: estables a los rayos UV, resistentes a la humedad y fáciles de limpiar, pero lo bastante refinados para especificarse en un interior sin justificación.",
-        "Terrazas, lobbies, zonas de piscina, salas de lectura bañadas de sol — In and Out se mueve libremente entre ellas, manteniendo color y carácter frente al clima y al uso.",
+        "Terrazas, lobbies, zonas de piscina, salas de lectura bañadas de sol — Performance se mueve libremente entre ellas, manteniendo color y carácter frente al clima y al uso.",
       ],
     },
     seo: {
       title: {
-        en: "In and Out — Indoor / Outdoor Performance Textiles",
-        pt: "In and Out — Tecidos de Performance Indoor e Outdoor",
-        es: "In and Out — Tejidos de Rendimiento Indoor y Outdoor",
+        en: "Performance — Indoor / Outdoor Performance Textiles",
+        pt: "Performance — Tecidos Indoor e Outdoor de Alta Performance",
+        es: "Performance — Tejidos Indoor y Outdoor de Alto Rendimiento",
       },
       description: {
         en: "UV-stable, moisture-resistant indoor-outdoor fabrics for hospitality and residential spaces. Refined performance from Lady Fabrics.",

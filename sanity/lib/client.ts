@@ -4,7 +4,7 @@ import { apiVersion, dataset, projectId, readToken } from "@/sanity/env";
 
 export const client = createClient({
   projectId, dataset, apiVersion,
-  useCdn: true,
+  useCdn: false,
   perspective: "published",
   stega: false,
 });

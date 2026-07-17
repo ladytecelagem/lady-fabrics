@@ -8,13 +8,13 @@ export default defineType({
     { name: "order", type: "number", initialValue: 100 },
     {
       name: "fiber", type: "string", title: "Primary Fiber",
-      options: { list: ["wool", "linen", "polyester", "blend", "acoustic", "technical"] },
+      options: { list: ["wool", "linen", "cotton", "polyester", "blend", "acoustic", "technical"] },
     },
     {
       name: "applications", type: "array", title: "Applications",
       of: [{ type: "string" }],
       options: {
-        list: ["workplace", "hospitality", "residential", "acoustic", "furniture", "contract"],
+        list: ["workplace", "hospitality", "residential", "healthcare", "corporate", "acoustic", "furniture", "contract", "outdoor"],
       },
     },
     { name: "tagline", type: "localeString" },
@@ -38,6 +38,9 @@ export default defineType({
     { name: "related", type: "array", title: "Related Collections",
       of: [{ type: "reference", to: [{ type: "collection" }] }] },
     { name: "seo", type: "seo" },
+  ],
+  orderings: [
+    { title: "Order", name: "orderAsc", by: [{ field: "order", direction: "asc" }] },
   ],
   preview: {
     select: { title: "title", subtitle: "fiber", media: "heroImage" },

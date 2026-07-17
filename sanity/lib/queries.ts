@@ -8,13 +8,14 @@ export const homePageQuery = groq`*[_type == "homePage"][0]{
 }`;
 
 export const allCollectionsQuery = groq`*[_type == "collection" && !(_id in path("drafts.**"))] | order(order asc, title asc){
-  _id, title, slug, fiber, applications,
+  _id, title, slug, fiber, applications, tagline,
   "image": heroImage.asset->url,
   "thumbnails": gallery[0...3].asset->url
 }`;
 
 export const collectionBySlugQuery = groq`*[_type == "collection" && slug.current == $slug][0]{
-  _id, title, slug, fiber, applications, story, composition, specifications,
+  _id, title, slug, fiber, applications, tagline, story, composition, specifications,
+  "seo": seo{ title, description, noIndex, "ogImage": ogImage.asset->url },
   "heroImage": heroImage.asset->url,
   "gallery": gallery[].asset->url,
   "downloads": downloads[]{ title, "url": file.asset->url, "size": file.asset->size },

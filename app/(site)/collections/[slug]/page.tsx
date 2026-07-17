@@ -1,29 +1,80 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
+import { PortableText } from "@portabletext/react";
 import { sanityFetch } from "@/sanity/lib/client";
 import { collectionBySlugQuery } from "@/sanity/lib/queries";
+import { lf } from "@/lib/i18n/locale-field";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
 
 export const revalidate = 60;
 
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://lady-fabrics.vercel.app";
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const locale = await getLocale();
   const c = await sanityFetch<any>({ query: collectionBySlugQuery, params: { slug } }).catch(() => null);
-  return { title: c?.title || "Collection" };
+  if (!c) return { title: "Collection" };
+
+  const title = lf<string>(c.seo?.title, locale) || `${c.title} — Lady Fabrics`;
+  const description = lf<string>(c.seo?.description, locale) || lf<string>(c.tagline, locale) || undefined;
+  const image = c.seo?.ogImage || c.heroImage;
+  const url = `${SITE}/collections/${slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    robots: c.seo?.noIndex ? { index: false, follow: false } : { index: true, follow: true },
+    openGraph: {
+      type: "article",
+      url,
+      title,
+      description,
+      siteName: "Lady Fabrics",
+      images: image ? [{ url: image, width: 1200, height: 630, alt: c.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
 }
 
 export default async function CollectionDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const locale = await getLocale();
   const t = await getTranslations("collections");
   const c = await sanityFetch<any>({ query: collectionBySlugQuery, params: { slug }, tags: [`collection:${slug}`] }).catch(() => null);
   if (!c) notFound();
 
+  const tagline = lf<string>(c.tagline, locale);
+  const story = lf<any[]>(c.story, locale);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: c.title,
+    description: lf<string>(c.seo?.description, locale) || tagline,
+    brand: { "@type": "Brand", name: "Lady Fabrics" },
+    category: c.fiber,
+    ...(c.heroImage ? { image: [c.heroImage] } : {}),
+    url: `${SITE}/collections/${slug}`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* HERO */}
       <section className="relative h-[80vh] bg-ink text-bone overflow-hidden">
         {c.heroImage && <Image src={c.heroImage} alt={c.title} fill priority className="object-cover opacity-80" />}
@@ -32,6 +83,9 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
           <Reveal>
             <p className="text-xs uppercase tracking-[0.3em] mb-4 text-bone/70">{c.fiber}</p>
             <h1 className="text-display text-6xl lg:text-9xl leading-none">{c.title}</h1>
+            {tagline && (
+              <p className="mt-6 max-w-xl text-lg text-bone/80">{tagline}</p>
+            )}
           </Reveal>
         </Container>
       </section>
@@ -40,9 +94,9 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
       <Container className="py-24 grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-7">
           <Reveal>
-            <h2 className="text-display text-3xl mb-6">About the collection</h2>
-            <div className="prose prose-neutral max-w-none text-ink/80">
-              {/* portable text would render here */}
+            <h2 className="text-display text-3xl mb-6">{t("title")}</h2>
+            <div className="prose prose-neutral max-w-none text-ink/80 [&_p]:mb-6 [&_p]:text-lg [&_p]:leading-relaxed">
+              {story?.length ? <PortableText value={story} /> : null}
             </div>
           </Reveal>
         </div>

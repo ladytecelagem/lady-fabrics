@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Layers, BookOpen, Newspaper, TrendingUp, Building2, Image, Settings, Users, LogOut, Compass } from "lucide-react";
+import { LayoutDashboard, Layers, BookOpen, Newspaper, TrendingUp, Building2, Image, Settings, Users, LogOut, Compass, Palette } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { createClient } from "@/lib/supabase/client";
 
 const items = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/collections", icon: Layers, label: "Collections" },
+  { href: "/admin/fabrics", icon: Palette, label: "Fabrics" },
   { href: "/admin/sample-books", icon: BookOpen, label: "Sample Books" },
   { href: "/admin/industries", icon: Building2, label: "Industries" },
   { href: "/admin/news", icon: Newspaper, label: "News" },

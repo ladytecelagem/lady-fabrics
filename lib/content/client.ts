@@ -24,5 +24,5 @@ export async function brandId(): Promise<string | null> {
   const { data } = await readClient()
     .from("brands").select("id").eq("slug", BRAND_SLUG).single();
   _brandId = (data as any)?.id ?? null;
-  return _brandId;
+  return _brandId ?? null;
 }

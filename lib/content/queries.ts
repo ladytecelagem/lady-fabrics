@@ -14,7 +14,7 @@ export async function getPage(key: string): Promise<Page | null> {
     const { data } = await readClient()
       .from("pages").select("*")
       .eq("brand_id", bid).eq("key", key).single();
-    return (data as Page) ?? null;
+    return (data as unknown as Page) ?? null;
   }, null);
 }
 
@@ -28,7 +28,7 @@ export async function getCollections(): Promise<Collection[]> {
       .eq("brand_id", bid)
       .order("order", { ascending: true })
       .order("name", { ascending: true });
-    return (data as Collection[]) ?? [];
+    return (data as unknown as Collection[]) ?? [];
   }, []);
 }
 
@@ -39,7 +39,7 @@ export async function getCollectionBySlug(slug: string): Promise<Collection | nu
     const { data } = await readClient()
       .from("collections").select("*")
       .eq("brand_id", bid).eq("slug", slug).single();
-    return (data as Collection) ?? null;
+    return (data as unknown as Collection) ?? null;
   }, null);
 }
 
@@ -49,7 +49,7 @@ export async function getCollectionSlugs(): Promise<{ slug: string }[]> {
     if (!bid) return [];
     const { data } = await readClient()
       .from("collections").select("slug").eq("brand_id", bid);
-    return (data as { slug: string }[]) ?? [];
+    return (data as unknown as { slug: string }[]) ?? [];
   }, []);
 }
 
@@ -61,7 +61,7 @@ export async function getFabricsByCollection(collectionId: string): Promise<Fabr
       .eq("collection_id", collectionId)
       .order("order", { ascending: true })
       .order("name", { ascending: true });
-    return (data as Fabric[]) ?? [];
+    return (data as unknown as Fabric[]) ?? [];
   }, []);
 }
 
@@ -69,7 +69,7 @@ export async function getFabricById(id: string): Promise<Fabric | null> {
   return safe(async () => {
     const { data } = await readClient()
       .from("fabrics").select("*").eq("id", id).single();
-    return (data as Fabric) ?? null;
+    return (data as unknown as Fabric) ?? null;
   }, null);
 }
 
@@ -81,7 +81,7 @@ export async function getVisualizerFabrics(): Promise<Fabric[]> {
       .from("fabrics").select("*")
       .eq("brand_id", bid).eq("in_visualizer", true)
       .order("order", { ascending: true });
-    return (data as Fabric[]) ?? [];
+    return (data as unknown as Fabric[]) ?? [];
   }, []);
 }
 
@@ -93,7 +93,7 @@ export async function getIndustries(): Promise<Industry[]> {
     const { data } = await readClient()
       .from("industries").select("*")
       .eq("brand_id", bid).order("order", { ascending: true });
-    return (data as Industry[]) ?? [];
+    return (data as unknown as Industry[]) ?? [];
   }, []);
 }
 
@@ -104,7 +104,7 @@ export async function getIndustryBySlug(slug: string): Promise<Industry | null> 
     const { data } = await readClient()
       .from("industries").select("*")
       .eq("brand_id", bid).eq("slug", slug).single();
-    return (data as Industry) ?? null;
+    return (data as unknown as Industry) ?? null;
   }, null);
 }
 
@@ -118,7 +118,7 @@ export async function getNews(limit = 50): Promise<NewsArticle[]> {
       .eq("brand_id", bid)
       .order("published_at", { ascending: false })
       .limit(limit);
-    return (data as NewsArticle[]) ?? [];
+    return (data as unknown as NewsArticle[]) ?? [];
   }, []);
 }
 
@@ -129,7 +129,7 @@ export async function getNewsBySlug(slug: string): Promise<NewsArticle | null> {
     const { data } = await readClient()
       .from("news").select("*")
       .eq("brand_id", bid).eq("slug", slug).single();
-    return (data as NewsArticle) ?? null;
+    return (data as unknown as NewsArticle) ?? null;
   }, null);
 }
 
@@ -141,6 +141,6 @@ export async function getFurniture(): Promise<Furniture[]> {
     const { data } = await readClient()
       .from("furniture").select("*")
       .eq("brand_id", bid).order("name", { ascending: true });
-    return (data as Furniture[]) ?? [];
+    return (data as unknown as Furniture[]) ?? [];
   }, []);
 }

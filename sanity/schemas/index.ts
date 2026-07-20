@@ -3,6 +3,7 @@ import homePage from "./documents/homePage";
 import siteSettings from "./documents/siteSettings";
 import collection from "./documents/collection";
 import fabric from "./documents/fabric";
+import furniture from "./documents/furniture";
 import sampleBook from "./documents/sampleBook";
 import industry from "./documents/industry";
 import newsItem from "./documents/newsItem";
@@ -20,7 +21,7 @@ import colorway from "./objects/colorway";
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     homePage, siteSettings,
-    collection, fabric, sampleBook, industry, newsItem, trend, author,
+    collection, fabric, furniture, sampleBook, industry, newsItem, trend, author,
     localeString, localeText, localeBlock,
     seo, specification, sampleBookPage, downloadAsset, colorway,
   ],

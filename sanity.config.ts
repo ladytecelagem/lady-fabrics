@@ -17,6 +17,7 @@ export default defineConfig({
           S.divider(),
           S.documentTypeListItem("collection").title("📐 Collections"),
           S.documentTypeListItem("fabric").title("🧵 Fabrics"),
+          S.documentTypeListItem("furniture").title("🛋 Furniture"),
           S.documentTypeListItem("sampleBook").title("📕 Sample Books"),
           S.documentTypeListItem("industry").title("🏛 Industries"),
           S.divider(),

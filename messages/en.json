@@ -7,7 +7,8 @@
     "sustainability": "Sustainability",
     "about": "About",
     "contact": "Contact",
-    "requestSample": "Request Sample"
+    "requestSample": "Request Sample",
+    "visualizer": "Visualizer"
   },
   "home": {
     "hero": {
@@ -32,8 +33,14 @@
         "contract": "Contract"
       }
     },
-    "intelligence": { "title": "Market Intelligence", "cta": "Read the latest" },
-    "sustainability": { "title": "Material responsibility", "body": "Wool that returns to earth. Linen grown without compromise." }
+    "intelligence": {
+      "title": "Market Intelligence",
+      "cta": "Read the latest"
+    },
+    "sustainability": {
+      "title": "Material responsibility",
+      "body": "Wool that returns to earth. Linen grown without compromise."
+    }
   },
   "collections": {
     "title": "Collections",

@@ -16,6 +16,7 @@ export const siteConfig = {
 
 export const nav = [
   { href: "/collections", key: "collections" },
+  { href: "/visualizer", key: "visualizer" },
   { href: "/sample-books", key: "sampleBooks" },
   { href: "/industries", key: "industries" },
   { href: "/intelligence", key: "intelligence" },

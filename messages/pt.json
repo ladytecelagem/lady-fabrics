@@ -7,7 +7,8 @@
     "sustainability": "Sustentabilidade",
     "about": "Sobre",
     "contact": "Contato",
-    "requestSample": "Solicitar Amostra"
+    "requestSample": "Solicitar Amostra",
+    "visualizer": "Visualizador"
   },
   "home": {
     "hero": {
@@ -32,25 +33,46 @@
         "contract": "Contract"
       }
     },
-    "intelligence": { "title": "Inteligência de Mercado", "cta": "Ler mais" },
-    "sustainability": { "title": "Responsabilidade material", "body": "Lã que retorna à terra. Linho cultivado sem concessões." }
+    "intelligence": {
+      "title": "Inteligência de Mercado",
+      "cta": "Ler mais"
+    },
+    "sustainability": {
+      "title": "Responsabilidade material",
+      "body": "Lã que retorna à terra. Linho cultivado sem concessões."
+    }
   },
   "collections": {
-    "title": "Coleções", "filter": "Filtrar", "all": "Todas",
-    "byFiber": "Por fibra", "byApplication": "Por aplicação",
-    "specs": "Especificações", "composition": "Composição",
-    "applications": "Aplicações", "downloads": "Downloads",
-    "requestSample": "Solicitar amostra", "related": "Coleções relacionadas"
+    "title": "Coleções",
+    "filter": "Filtrar",
+    "all": "Todas",
+    "byFiber": "Por fibra",
+    "byApplication": "Por aplicação",
+    "specs": "Especificações",
+    "composition": "Composição",
+    "applications": "Aplicações",
+    "downloads": "Downloads",
+    "requestSample": "Solicitar amostra",
+    "related": "Coleções relacionadas"
   },
   "sampleBooks": {
     "title": "Cartelas Digitais",
     "subtitle": "Navegue cartelas completas, página a página.",
-    "browse": "Navegar cartela", "download": "Baixar PDF", "share": "Compartilhar", "favorite": "Salvar"
+    "browse": "Navegar cartela",
+    "download": "Baixar PDF",
+    "share": "Compartilhar",
+    "favorite": "Salvar"
   },
   "form": {
-    "name": "Nome", "email": "E-mail", "company": "Empresa", "phone": "Telefone",
-    "message": "Mensagem", "submit": "Enviar", "submitting": "Enviando…",
-    "success": "Obrigado. Entraremos em contato.", "error": "Algo deu errado. Tente novamente."
+    "name": "Nome",
+    "email": "E-mail",
+    "company": "Empresa",
+    "phone": "Telefone",
+    "message": "Mensagem",
+    "submit": "Enviar",
+    "submitting": "Enviando…",
+    "success": "Obrigado. Entraremos em contato.",
+    "error": "Algo deu errado. Tente novamente."
   },
   "footer": {
     "rights": "Todos os direitos reservados.",

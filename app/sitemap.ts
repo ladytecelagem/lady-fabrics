@@ -1,30 +1,26 @@
 import type { MetadataRoute } from "next";
-import { sanityFetch } from "@/sanity/lib/client";
-import { groq } from "next-sanity";
-import { siteConfig } from "@/lib/config";
+import { getCollectionSlugs, getNews } from "@/lib/content/queries";
+
+const base = process.env.NEXT_PUBLIC_SITE_URL || "https://lady-fabrics.vercel.app";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = siteConfig.url;
-  const staticPages = ["", "/about", "/heritage", "/collections", "/sample-books", "/industries", "/intelligence", "/news", "/sustainability", "/contact"];
-
-  const dynamicData = await sanityFetch<any>({
-    query: groq`{
-      "collections": *[_type=="collection"]{ "slug": slug.current, _updatedAt },
-      "sampleBooks": *[_type=="sampleBook"]{ "slug": slug.current, _updatedAt },
-      "news": *[_type=="newsItem"]{ "slug": slug.current, _updatedAt },
-      "fabrics": *[_type=="fabric"]{ "slug": slug.current, _updatedAt },
-    }`,
-  }).catch(() => ({ collections: [], sampleBooks: [], news: [], fabrics: [] }));
-
-  const dyn = [
-    ...dynamicData.collections.map((c: any) => ({ url: `${base}/collections/${c.slug}`, lastModified: c._updatedAt })),
-    ...dynamicData.sampleBooks.map((c: any) => ({ url: `${base}/sample-books/${c.slug}`, lastModified: c._updatedAt })),
-    ...dynamicData.news.map((c: any) => ({ url: `${base}/news/${c.slug}`, lastModified: c._updatedAt })),
-    ...(dynamicData.fabrics ?? []).map((c: any) => ({ url: `${base}/fabrics/${c.slug}`, lastModified: c._updatedAt })),
+  const staticPages = [
+    "", "/about", "/heritage", "/collections", "/industries",
+    "/intelligence", "/news", "/sustainability", "/contact", "/visualizer",
   ];
 
+  const [collections, news] = await Promise.all([
+    getCollectionSlugs(),
+    getNews(200),
+  ]);
+
+  const now = new Date();
+
   return [
-    ...staticPages.map(p => ({ url: `${base}${p}`, lastModified: new Date() })),
-    ...dyn,
+    ...staticPages.map(p => ({ url: `${base}${p}`, lastModified: now })),
+    ...collections.map(c => ({ url: `${base}/collections/${c.slug}`, lastModified: now })),
+    ...news.map(n => ({ url: `${base}/news/${n.slug}`, lastModified: n.published_at ? new Date(n.published_at) : now })),
   ];
 }

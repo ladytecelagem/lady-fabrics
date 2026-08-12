@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     const sb = readClient();
     const bid = await brandId();
-    const { data, error } = await sb.from("baskets")
+    const { data, error } = await (sb as any).from("baskets")
       .insert({ brand_id: bid, items: clean })
       .select("id").single();
     if (error) throw error;

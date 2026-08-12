@@ -9,7 +9,7 @@ export const metadata = { title: "Saved selection — Lady Fabrics" };
 
 export default async function BasketPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { data } = await readClient().from("baskets").select("items,created_at").eq("id", id).maybeSingle();
+  const { data } = await (readClient() as any).from("baskets").select("items,created_at").eq("id", id).maybeSingle();
   if (!data) notFound();
 
   const items = ((data as any).items as any[]) ?? [];

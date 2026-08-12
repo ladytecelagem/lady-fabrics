@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const { sourceId, enable } = await req.json();
     if (!sourceId) return NextResponse.json({ error: "sourceId required" }, { status: 400 });
 
-    const sb = createServiceClient();
+    const sb = createServiceClient() as any;
 
     const { data: brand, error: be } = await sb
       .from("brands").select("id").eq("slug", "lady-fabrics").maybeSingle();

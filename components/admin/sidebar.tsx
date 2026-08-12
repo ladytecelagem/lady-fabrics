@@ -1,15 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Layers, BookOpen, Newspaper, TrendingUp, Building2, Image, Settings, Users, LogOut, Compass, FileText } from "lucide-react";
+import { LayoutDashboard, Layers, BookOpen, Newspaper, TrendingUp, Building2, Image, Settings, Users, LogOut, Compass, Frame } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { createClient } from "@/lib/supabase/client";
 
 const items = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/pages", icon: FileText, label: "Pages" },
-  { href: "/admin/content-news", icon: Newspaper, label: "Content · News" },
   { href: "/admin/collections", icon: Layers, label: "Collections" },
+  { href: "/admin/visualizer-fabrics", icon: Frame, label: "Visualizer fabrics" },
   { href: "/admin/sample-books", icon: BookOpen, label: "Sample Books" },
   { href: "/admin/industries", icon: Building2, label: "Industries" },
   { href: "/admin/news", icon: Newspaper, label: "News" },
@@ -46,7 +45,10 @@ export function AdminSidebar({ email, role }: { email: string; role: string }) {
             </Link>
           );
         })}
-
+        <a href="/studio" target="_blank" rel="noopener"
+          className="flex items-center gap-3 px-3 py-2 rounded text-sm text-ink/70 hover:bg-ink/5 transition-colors">
+          <Layers className="w-4 h-4" />Open Sanity Studio ↗
+        </a>
       </nav>
 
       <div className="px-3 py-4 border-t border-ink/10 text-xs">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FabricRenderer } from "@/lib/visualizer";
-import type { FabricVis, FurnitureVis } from "./types";
+import type { VisFabric, VisFurniture } from "./types";
 
 const renderer = new FabricRenderer();
 
@@ -11,27 +11,22 @@ function loadImg(url: string): Promise<HTMLImageElement> {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`failed to load ${url}`));
+    img.onerror = () => reject(new Error(`failed to load image`));
     img.src = url;
   });
 }
 
 export function VisualizerCanvas({
-  fabric,
-  furniture,
-}: {
-  fabric: FabricVis | null;
-  furniture: FurnitureVis | null;
-}) {
+  fabric, furniture,
+}: { fabric: VisFabric | null; furniture: VisFurniture | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState("");
+  const [note, setNote] = useState("");
 
   useEffect(() => {
     if (!furniture) return;
     let cancelled = false;
-    setLoading(true);
-    setErr("");
+    setLoading(true); setNote("");
 
     (async () => {
       try {
@@ -50,32 +45,24 @@ export function VisualizerCanvas({
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 
-        // Sem tecido escolhido: mostra só o móvel.
-        if (!swatchImg || !maskImg) {
-          ctx.drawImage(baseImg, 0, 0, cnv.width, cnv.height);
-          setLoading(false);
-          return;
+        // Sem tecido, ou móvel sem máscara: mostra o móvel e avisa.
+        if (!swatchImg) { ctx.drawImage(baseImg, 0, 0); setLoading(false); return; }
+        if (!maskImg) {
+          ctx.drawImage(baseImg, 0, 0);
+          setNote("This piece has no upholstery mask yet, so the fabric can't be applied. Add a mask in the visualizer admin.");
+          setLoading(false); return;
         }
 
         const result = renderer.render(
-          {
-            swatch: swatchImg,
-            category: (fabric?.category as any) ?? "plain",
-            pxPerCm: fabric?.pxPerCm ?? 40,
-          },
-          {
-            base: baseImg,
-            mask: maskImg,
-            shading: shadeImg ?? undefined,
-          },
-          { swatchScale: furniture.swatchScale ?? 1 },
+          { swatch: swatchImg, category: (fabric?.category as any) ?? "plain" },
+          { base: baseImg, mask: maskImg, shading: shadeImg ?? undefined },
+          {},
         );
-
         if (cancelled) return;
         ctx.drawImage(result.canvas, 0, 0, cnv.width, cnv.height);
         setLoading(false);
-      } catch (e: any) {
-        if (!cancelled) { setErr(e.message); setLoading(false); }
+      } catch {
+        if (!cancelled) { setNote("Could not render this combination."); setLoading(false); }
       }
     })();
 
@@ -97,7 +84,7 @@ export function VisualizerCanvas({
           </div>
         )}
       </div>
-      {err && <p className="text-xs text-red-600 mt-2">{err}</p>}
+      {note && <p className="text-xs text-stone mt-2">{note}</p>}
     </div>
   );
 }

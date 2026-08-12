@@ -1,19 +1,18 @@
-export type FabricVis = {
+export type VisFabric = {
   id: string;
   name: string;
-  code?: string;
-  collection?: string;
-  swatch: string;            // URL do visualizerSwatch (ou mainImage)
+  code: string | null;
+  swatch: string;              // texture_url (tileável) ou swatch_url
   category?: string;
-  pxPerCm?: number;
+  dominant_colors?: { hex: string; ratio: number }[];
 };
 
-export type FurnitureVis = {
+export type VisFurniture = {
   id: string;
   name: string;
   category?: string;
-  base: string;              // URL baseImage
-  mask?: string;             // URL maskImage
-  shading?: string;          // URL shadingImage
-  swatchScale?: number;
+  base: string;                // base_image_url
+  mask?: string | null;        // mask_url
+  shading?: string | null;     // shading_url
+  thumb?: string | null;
 };

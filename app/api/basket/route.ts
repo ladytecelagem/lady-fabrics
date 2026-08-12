@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       .select("id").single();
     if (error) throw error;
 
-    return NextResponse.json({ ok: true, id: data.id });
+    return NextResponse.json({ ok: true, id: (data as any).id });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

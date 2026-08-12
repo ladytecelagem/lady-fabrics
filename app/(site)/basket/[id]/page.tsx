@@ -12,7 +12,7 @@ export default async function BasketPage({ params }: { params: Promise<{ id: str
   const { data } = await readClient().from("baskets").select("items,created_at").eq("id", id).maybeSingle();
   if (!data) notFound();
 
-  const items = (data.items as any[]) ?? [];
+  const items = ((data as any).items as any[]) ?? [];
 
   return (
     <Container className="py-16 lg:py-24">

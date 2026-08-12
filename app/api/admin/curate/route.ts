@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         { status: 500 },
       );
     }
-    const dst = brand.id;
+    const dst = (brand as any).id;
     const slug = copySlug(sourceId);
 
     if (!enable) {
@@ -46,18 +46,19 @@ export async function POST(req: NextRequest) {
       .eq("id", sourceId).maybeSingle();
     if (se) throw se;
     if (!src) return NextResponse.json({ error: "source fabric not found" }, { status: 404 });
+    const s = src as any;
 
     const row = {
       brand_id: dst, slug,
-      name: src.name, code: src.code, color_name: src.color_name,
-      swatch_url: src.swatch_url, texture_url: src.texture_url, thumb_url: src.thumb_url,
-      dominant_colors: src.dominant_colors, in_visualizer: true,
+      name: s.name, code: s.code, color_name: s.color_name,
+      swatch_url: s.swatch_url, texture_url: s.texture_url, thumb_url: s.thumb_url,
+      dominant_colors: s.dominant_colors, in_visualizer: true,
     };
 
     const { data: existing } = await sb.from("fabrics")
       .select("id").eq("brand_id", dst).eq("slug", slug).maybeSingle();
     if (existing) {
-      const { error } = await sb.from("fabrics").update(row).eq("id", existing.id);
+      const { error } = await sb.from("fabrics").update(row).eq("id", (existing as any).id);
       if (error) throw error;
     } else {
       const { error } = await sb.from("fabrics").insert(row);

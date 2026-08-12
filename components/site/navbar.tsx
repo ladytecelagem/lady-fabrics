@@ -25,19 +25,19 @@ export function Navbar() {
       "fixed inset-x-0 top-0 z-50 transition-all duration-500",
       scrolled ? "glass border-b border-ink/5" : "bg-transparent"
     )}>
-      <div className="container-x flex items-center justify-between h-20">
-        <Link href="/" className="text-display text-2xl tracking-tight">Lady<span className="text-stone">·</span>Fabrics</Link>
+      <div className="container-x flex items-center h-20">
+        <Link href="/" className="text-display text-2xl tracking-tight mr-16 xl:mr-24">Lady<span className="text-stone">·</span>Fabrics</Link>
 
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-6">
           {nav.map(item => (
             <Link key={item.href} href={item.href}
-              className="text-xs uppercase tracking-widest text-ink/70 hover:text-ink transition-colors">
+              className="text-[11px] uppercase tracking-widest text-ink/70 hover:text-ink transition-colors">
               {t(item.key)}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4 ml-auto">
           <LocaleSwitcher />
           <Button size="sm" asChild><Link href="/contact?intent=sample">{t("requestSample")}</Link></Button>
         </div>

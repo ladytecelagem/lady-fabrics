@@ -1,10 +1,15 @@
+import { MediaUploader } from "@/components/admin/media-uploader";
+
 export const metadata = { title: "Media — Admin" };
+
 export default function Page() {
   return (
     <div className="p-10">
-      <h1 className="text-display text-4xl mb-6">Media</h1>
-      <p className="text-stone text-sm mb-6">Managed via Sanity Studio.</p>
-      <a href="/studio" target="_blank" className="text-xs uppercase tracking-widest underline">Open Studio ↗</a>
+      <h1 className="text-display text-4xl mb-2">Media</h1>
+      <p className="text-stone text-sm mb-8 max-w-2xl">
+        Upload images here and copy the URL into any image field in the admin.
+      </p>
+      <MediaUploader />
     </div>
   );
 }

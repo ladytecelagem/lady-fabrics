@@ -53,6 +53,10 @@ export function CurateGrid({ initial }: { initial: Row[] }) {
   const toggleCollapse = (g: string) =>
     setCollapsed(s => { const n = new Set(s); n.has(g) ? n.delete(g) : n.add(g); return n; });
 
+  const allCollapsed = groups.length > 0 && groups.every(([g]) => collapsed.has(g));
+  const toggleAll = () =>
+    setCollapsed(allCollapsed ? new Set<string>() : new Set(groups.map(([g]) => g)));
+
   const setEnabled = async (r: Row, next: boolean) => {
     if (r.enabled === next) return;
     setBusy(r.id);
@@ -87,6 +91,10 @@ export function CurateGrid({ initial }: { initial: Row[] }) {
           <input type="checkbox" checked={onlyEnabled} onChange={e => setOnlyEnabled(e.target.checked)} />
           In visualizer only
         </label>
+        <button onClick={toggleAll}
+          className="text-[11px] uppercase tracking-widest border border-ink/20 px-3 h-8 hover:border-ink">
+          {allCollapsed ? "Expand all" : "Collapse all"}
+        </button>
         <span className="text-xs uppercase tracking-widest text-ink">{enabledCount} enabled</span>
       </div>
 

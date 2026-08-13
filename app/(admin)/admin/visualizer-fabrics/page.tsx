@@ -13,15 +13,11 @@ export default async function VisualizerFabricsPage() {
 
   if (!src) return <div className="p-10"><p className="text-stone text-sm">Source brand lady-tecelagem not found.</p></div>;
 
-  // coleções (para nome do grupo)
-  const { data: cols } = await sb.from("collections").select("id,name");
-  const colName = new Map<string, string>((cols ?? []).map((c: any) => [c.id, c.name]));
-
   const { data: srcFabrics } = await sb.from("fabrics")
-    .select("id,name,code,color_name,thumb_url,swatch_url,collection_id")
+    .select("id,name,code,color_name,thumb_url,swatch_url")
     .eq("brand_id", src.id)
     .order("name", { ascending: true })
-    .limit(1000);
+    .limit(2000);
 
   const enabledSlugs = new Set<string>();
   if (dst) {
@@ -31,12 +27,8 @@ export default async function VisualizerFabricsPage() {
   }
 
   const rows = (srcFabrics ?? []).map((f: any) => ({
-    id: f.id,
-    name: f.name,
-    code: f.code,
-    color_name: f.color_name,
+    id: f.id, name: f.name, code: f.code, color_name: f.color_name,
     thumb: f.thumb_url || f.swatch_url,
-    collection: f.collection_id ? (colName.get(f.collection_id) || "Uncategorised") : "Uncategorised",
     enabled: enabledSlugs.has(`lt-${f.id}`),
   }));
 
@@ -44,8 +36,8 @@ export default async function VisualizerFabricsPage() {
     <div className="p-10">
       <h1 className="text-display text-4xl mb-2">Visualizer fabrics</h1>
       <p className="text-stone text-sm mb-8 max-w-2xl">
-        Grouped by collection. Tap a swatch to add or remove it from the Lady Fabrics visualizer.
-        Use “Add all” to enable a whole collection. Changes appear on /visualizer within a minute.
+        Grouped by article. Tap a colour to add or remove it from the Lady Fabrics visualizer.
+        Use “Add all” to enable a whole article. Changes appear on /visualizer within a minute.
       </p>
       <CurateGrid initial={rows} />
     </div>

@@ -65,7 +65,10 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
 
       {/* HERO */}
       <section className="relative h-[80vh] bg-ink text-bone overflow-hidden">
-        {c.hero_image_url && <Image src={c.hero_image_url} alt={c.name} fill priority className="object-cover opacity-80" />}
+        {c.hero_image_url && (
+          <Image src={c.hero_image_url} alt={c.name} fill priority quality={90}
+            sizes="100vw" className="object-cover opacity-80" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
         <Container className="relative h-full flex items-end pb-16">
           <Reveal>
@@ -123,7 +126,8 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
                   <Link key={a.id} href={`/collections/${slug}/${a.slug}`} className="group block">
                     <div className="relative aspect-[4/5] bg-wool overflow-hidden mb-4">
                       {cover && (
-                        <Image src={cover} alt={a.name} fill
+                        <Image src={cover} alt={a.name} fill quality={85}
+                          sizes="(max-width:768px) 50vw, (max-width:1024px) 33vw, 25vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-105" />
                       )}
                     </div>
@@ -153,7 +157,7 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
             <div className="grid md:grid-cols-2 gap-1">
               {c.gallery.map((src, i) => (
                 <div key={i} className="relative aspect-[4/5] bg-wool">
-                  <Image src={src} alt="" fill className="object-cover" />
+                  <Image src={src} alt="" fill sizes="(max-width:768px) 100vw, 50vw" quality={85} className="object-cover" />
                 </div>
               ))}
             </div>

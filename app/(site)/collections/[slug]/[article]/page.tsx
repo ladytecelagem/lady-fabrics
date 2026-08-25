@@ -48,7 +48,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     <>
       {/* HERO */}
       <section className="relative h-[60vh] bg-ink text-bone overflow-hidden">
-        {cover && <Image src={cover} alt={a.name} fill priority className="object-cover opacity-80" />}
+        {cover && (
+          <Image src={cover} alt={a.name} fill priority quality={90}
+            sizes="100vw" className="object-cover opacity-80" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
         <Container className="relative h-full flex items-end pb-14">
           <Reveal>
@@ -116,7 +119,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   <div className="relative aspect-square bg-wool overflow-hidden">
                     {(f.thumb_url || f.swatch_url) && (
                       <Image src={f.thumb_url || f.swatch_url} alt={f.color_name || f.code || a.name}
-                        fill sizes="160px" className="object-cover" />
+                        fill sizes="(max-width:640px) 33vw, (max-width:1024px) 20vw, 160px"
+                        className="object-cover" />
                     )}
                   </div>
                   <p className="text-xs mt-2">{f.code}</p>
@@ -135,7 +139,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <div className="grid md:grid-cols-2 gap-1">
               {a.gallery.map((src, i) => (
                 <div key={i} className="relative aspect-[4/5] bg-wool">
-                  <Image src={src} alt="" fill className="object-cover" />
+                  <Image src={src} alt="" fill sizes="(max-width:768px) 100vw, 50vw" quality={85} className="object-cover" />
                 </div>
               ))}
             </div>

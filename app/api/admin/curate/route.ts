@@ -36,8 +36,17 @@ export async function POST(req: NextRequest) {
     const slug = copySlug(sourceId);
 
     if (!enable) {
-      const { error } = await sb.from("fabrics").delete().eq("brand_id", dst).eq("slug", slug);
-      if (error) throw error;
+      // se o tecido tambem esta em uma collection, apenas desliga a flag
+      const { data: cur } = await sb.from("fabrics")
+        .select("id,collection_id").eq("brand_id", dst).eq("slug", slug).maybeSingle();
+      if (!cur) return NextResponse.json({ ok: true, enabled: false });
+      if (cur.collection_id) {
+        const { error } = await sb.from("fabrics").update({ in_visualizer: false }).eq("id", cur.id);
+        if (error) throw error;
+      } else {
+        const { error } = await sb.from("fabrics").delete().eq("id", cur.id);
+        if (error) throw error;
+      }
       return NextResponse.json({ ok: true, enabled: false });
     }
 
@@ -53,7 +62,8 @@ export async function POST(req: NextRequest) {
       name: s.name, code: s.code, color_name: s.color_name,
       swatch_url: s.swatch_url, texture_url: s.texture_url, thumb_url: s.thumb_url,
       dominant_colors: s.dominant_colors, in_visualizer: true,
-    };
+    } as any;
+    delete (row as any).collection_id; // nunca sobrescreve o vinculo de collection
 
     const { data: existing } = await sb.from("fabrics")
       .select("id").eq("brand_id", dst).eq("slug", slug).maybeSingle();

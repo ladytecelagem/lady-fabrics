@@ -99,3 +99,26 @@ export type Furniture = {
   shading_url: string | null;
   thumb_url: string | null;
 };
+
+export type FabricArticle = {
+  id: string;
+  collection_id: string | null;
+  name: string;
+  slug: string;
+  subtitle: string | null;
+  description: string | null;
+  composition: string | null;
+  width: string | null;
+  weight: string | null;
+  abrasion: string | null;
+  finish: string | null;
+  care: string | null;
+  applications: string[];
+  certifications: string[];
+  hero_image_url: string | null;
+  gallery: string[];
+  order: number;
+  seo_title: string | null;
+  seo_description: string | null;
+  og_image_url: string | null;
+};

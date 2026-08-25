@@ -21,6 +21,19 @@ export default async function EditCollection({ params }: { params: Promise<{ id:
     row = data;
   }
 
+  let articles: any[] = [];
+  if (!isNew) {
+    const { data: arts } = await sb.from("fabric_articles")
+      .select("id,name,hero_image_url").eq("collection_id", id)
+      .order("order", { ascending: true }).order("name", { ascending: true });
+    const { data: mine } = await sb.from("fabrics")
+      .select("article_id,thumb_url,swatch_url").eq("collection_id", id);
+    articles = (arts ?? []).map((a: any) => {
+      const cs = (mine ?? []).filter((f: any) => f.article_id === a.id);
+      return { ...a, colours: cs.length, cover: cs[0]?.thumb_url || cs[0]?.swatch_url || null };
+    });
+  }
+
   let picker: any[] = [];
   if (!isNew) {
     const { data: brands } = await sb.from("brands").select("id,slug").eq("slug", "lady-tecelagem");
@@ -54,6 +67,29 @@ export default async function EditCollection({ params }: { params: Promise<{ id:
       <h1 className="text-display text-4xl mt-3 mb-8">{isNew ? "New collection" : row.name}</h1>
 
       <CollectionEditor initial={row} />
+
+      {!isNew && articles.length > 0 && (
+        <div className="mt-16 border-t border-ink/10 pt-10">
+          <h2 className="text-display text-3xl mb-2">Fabric articles</h2>
+          <p className="text-stone text-sm mb-6 max-w-2xl">
+            Cada artigo vira uma página própria. Clique para editar imagem de capa, ficha técnica e descrição.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {articles.map((a: any) => (
+              <Link key={a.id} href={`/admin/articles/${a.id}`} className="group block">
+                <div className="aspect-[4/5] border border-ink/10 overflow-hidden bg-bone/40">
+                  {(a.hero_image_url || a.cover)
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    ? <img src={a.hero_image_url || a.cover} alt="" className="w-full h-full object-cover" />
+                    : null}
+                </div>
+                <p className="text-sm mt-2 group-hover:underline">{a.name}</p>
+                <p className="text-[11px] uppercase tracking-widest text-stone">{a.colours} colours</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {!isNew && (
         <div className="mt-16 border-t border-ink/10 pt-10">

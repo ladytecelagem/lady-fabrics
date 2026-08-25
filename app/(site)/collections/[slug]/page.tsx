@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getCollectionBySlug, getCollectionSlugs, getFabricsByCollection } from "@/lib/content/queries";
+import { getCollectionBySlug, getCollectionSlugs, getFabricsByCollection, getArticlesByCollection } from "@/lib/content/queries";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
@@ -42,6 +42,12 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
   if (!c) notFound();
 
   const fabrics = await getFabricsByCollection(c.id);
+  const articles = await getArticlesByCollection(c.id);
+  const swatchOf = (name: string) => {
+    const f = fabrics.find(x => x.name === name);
+    return f?.thumb_url || f?.swatch_url || null;
+  };
+  const colorsOf = (name: string) => fabrics.filter(x => x.name === name);
   const paragraphs = (c.story || "").split("\n\n").filter(Boolean);
 
   const jsonLd = {
@@ -101,36 +107,40 @@ export default async function CollectionDetail({ params }: { params: Promise<{ s
       </Container>
 
       {/* FABRICS */}
-      {fabrics.length > 0 && (
+      {articles.length > 0 && (
         <section className="py-16 border-t border-ink/10">
           <Container>
             <div className="flex items-baseline justify-between mb-12">
               <h2 className="text-display text-3xl lg:text-5xl">Fabrics</h2>
-              <p className="text-xs uppercase tracking-widest text-stone">{fabrics.length} references</p>
+              <p className="text-xs uppercase tracking-widest text-stone">{articles.length} articles</p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-              {fabrics.map(f => (
-                <div key={f.id} className="group block">
-                  <div className="relative aspect-square bg-wool overflow-hidden mb-3">
-                    {(f.thumb_url || f.swatch_url) && (
-                      <Image src={f.thumb_url || f.swatch_url} alt={f.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                    )}
-                  </div>
-                  <h3 className="text-lg leading-tight">{f.name}</h3>
-                  {f.code && <p className="text-xs uppercase tracking-widest text-stone mt-1">{f.code}</p>}
-                  {f.composition && <p className="text-xs text-ink/50 mt-1">{f.composition}</p>}
-                  {f.dominant_colors?.length > 0 && (
-                    <div className="flex items-center gap-1 mt-3">
-                      {f.dominant_colors.slice(0, 6).map((cw, i) => (
-                        <span key={i} title={cw.hex}
-                          className="w-4 h-4 rounded-full border border-ink/15"
-                          style={{ backgroundColor: cw.hex }} />
-                      ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-14">
+              {articles.map(a => {
+                const colors = colorsOf(a.name);
+                const cover = a.hero_image_url || swatchOf(a.name);
+                return (
+                  <Link key={a.id} href={`/collections/${slug}/${a.slug}`} className="group block">
+                    <div className="relative aspect-[4/5] bg-wool overflow-hidden mb-4">
+                      {cover && (
+                        <Image src={cover} alt={a.name} fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+                    <h3 className="text-display text-2xl leading-tight">{a.name}</h3>
+                    {a.composition && <p className="text-xs uppercase tracking-widest text-stone mt-1">{a.composition}</p>}
+                    <div className="flex items-center gap-1.5 mt-3">
+                      {colors.slice(0, 8).map(f => (
+                        <span key={f.id} title={`${f.code ?? ""} ${f.color_name ?? ""}`}
+                          className="w-3.5 h-3.5 rounded-full border border-ink/15 bg-cover"
+                          style={{ backgroundImage: `url(${f.thumb_url || f.swatch_url})` }} />
+                      ))}
+                      {colors.length > 8 && <span className="text-[10px] text-stone ml-1">+{colors.length - 8}</span>}
+                    </div>
+                    <p className="text-[11px] uppercase tracking-widest text-stone mt-2">{colors.length} colours</p>
+                  </Link>
+                );
+              })}
             </div>
           </Container>
         </section>

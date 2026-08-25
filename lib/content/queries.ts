@@ -1,5 +1,5 @@
 import { readClient, brandId } from "./client";
-import type { Page, Collection, Fabric, Industry, NewsArticle, Furniture } from "./types";
+import type { Page, Collection, Fabric, Industry, NewsArticle, Furniture, FabricArticle } from "./types";
 
 // Small helper: return [] on any error, so a page never crashes on read.
 async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
@@ -142,5 +142,38 @@ export async function getFurniture(): Promise<Furniture[]> {
       .from("furniture").select("*")
       .eq("brand_id", bid).order("name", { ascending: true });
     return (data as unknown as Furniture[]) ?? [];
+  }, []);
+}
+
+// ---------- FABRIC ARTICLES ----------
+export async function getArticlesByCollection(collectionId: string): Promise<FabricArticle[]> {
+  return safe(async () => {
+    const { data } = await (readClient() as any)
+      .from("fabric_articles").select("*")
+      .eq("collection_id", collectionId)
+      .order("order", { ascending: true })
+      .order("name", { ascending: true });
+    return (data as unknown as FabricArticle[]) ?? [];
+  }, []);
+}
+
+export async function getArticleBySlug(slug: string): Promise<FabricArticle | null> {
+  return safe(async () => {
+    const bid = await brandId();
+    if (!bid) return null;
+    const { data } = await (readClient() as any)
+      .from("fabric_articles").select("*")
+      .eq("brand_id", bid).eq("slug", slug).maybeSingle();
+    return (data as unknown as FabricArticle) ?? null;
+  }, null);
+}
+
+export async function getFabricsByArticle(articleId: string): Promise<Fabric[]> {
+  return safe(async () => {
+    const { data } = await (readClient() as any)
+      .from("fabrics").select("*")
+      .eq("article_id", articleId)
+      .order("code", { ascending: true });
+    return (data as unknown as Fabric[]) ?? [];
   }, []);
 }
